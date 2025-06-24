@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Prediction Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> ML Prediction Dashboard</h1>
+            <p>Hate Speech Detection & Diabetes Prediction</p>
+        </header>
+
+        <nav class="tab-navigation">
+            <button class="tab-btn active" onclick="showTab('hate-speech')">
+                <i class="fas fa-comments"></i> Hate Speech Detection
+            </button>
+            <button class="tab-btn" onclick="showTab('diabetes')">
+                <i class="fas fa-heartbeat"></i> Diabetes Prediction
+            </button>
+            <button class="tab-btn" onclick="showTab('visualizations')">
+                <i class="fas fa-chart-bar"></i> Visualizations
+            </button>
+        </nav>
+
+        <!-- Hate Speech Detection Tab -->
+        <div id="hate-speech" class="tab-content active">
+            <div class="card">
+                <h2><i class="fas fa-shield-alt"></i> Hate Speech Detection</h2>
+                <div class="form-group">
+                    <label for="text-input">Enter text to analyze:</label>
+                    <textarea id="text-input" placeholder="Type your text here..." rows="4"></textarea>
+                </div>
+                
+                <!-- Sample data buttons -->
+                <div class="sample-buttons">
+                    <button onclick="fillSampleText('hate')" class="btn btn-sample">
+                        <i class="fas fa-exclamation-triangle"></i> Sample Hate Speech
+                    </button>
+                    <button onclick="fillSampleText('normal')" class="btn btn-sample">
+                        <i class="fas fa-heart"></i> Sample Normal Text
+                    </button>
+                </div>
+                
+                <button onclick="predictHateSpeech()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Analyze Text
+                </button>
+                <div id="hate-speech-result" class="result-container"></div>
+            </div>
+        </div>
+
+        <!-- Diabetes Prediction Tab -->
+        <div id="diabetes" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-user-md"></i> Diabetes Risk Assessment</h2>
+                
+                <!-- Sample data buttons -->
+                <div class="sample-buttons">
+                    <button onclick="fillSampleData('diabetes-high-risk')" class="btn btn-sample">
+                        <i class="fas fa-exclamation-triangle"></i> High Risk Sample
+                    </button>
+                    <button onclick="fillSampleData('diabetes-low-risk')" class="btn btn-sample">
+                        <i class="fas fa-check-circle"></i> Low Risk Sample
+                    </button>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pregnancies">Pregnancies:</label>
+                        <input type="number" id="pregnancies" min="0" max="20" value="0">
+                        <small>Number of times pregnant</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="glucose">Glucose Level (mg/dL):</label>
+                        <input type="number" id="glucose" min="0" max="300" value="120">
+                        <small>Plasma glucose concentration</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="blood-pressure">Blood Pressure (mmHg):</label>
+                        <input type="number" id="blood-pressure" min="0" max="200" value="80">
+                        <small>Diastolic blood pressure</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="skin-thickness">Skin Thickness (mm):</label>
+                        <input type="number" id="skin-thickness" min="0" max="100" value="25">
+                        <small>Triceps skin fold thickness</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="insulin">Insulin (μU/mL):</label>
+                        <input type="number" id="insulin" min="0" max="500" value="100">
+                        <small>2-Hour serum insulin</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="bmi">BMI:</label>
+                        <input type="number" id="bmi" min="0" max="50" step="0.1" value="25.0">
+                        <small>Body mass index</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="diabetes-pedigree">Diabetes Pedigree:</label>
+                        <input type="number" id="diabetes-pedigree" min="0" max="3" step="0.01" value="0.5">
+                        <small>Diabetes pedigree function</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age (years):</label>
+                        <input type="number" id="age" min="1" max="120" value="30">
+                        <small>Age in years</small>
+                    </div>
+                </div>
+                <button onclick="predictDiabetes()" class="btn btn-primary">
+                    <i class="fas fa-calculator"></i> Predict Risk
+                </button>
+                <div id="diabetes-result" class="result-container"></div>
+            </div>
+        </div>
+
+        <!-- Visualizations Tab -->
+        <div id="visualizations" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Data Visualizations</h2>
+                <p>Explore data patterns and model insights through interactive visualizations.</p>
+                <button onclick="loadVisualizations()" class="btn btn-primary">
+                    <i class="fas fa-refresh"></i> Load Visualizations
+                </button>
+                <div id="viz-container" class="visualization-grid">
+                    <div class="loading">
+                        <i class="fas fa-chart-bar" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                        <p>Click "Load Visualizations" to see data insights and charts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 ML Prediction Dashboard. Built with Flask, scikit-learn, and modern web technologies.</p>
+        <!-- <p><small>Press Ctrl+Enter to quickly submit forms | This tool is for educational purposes</small></p> -->
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
