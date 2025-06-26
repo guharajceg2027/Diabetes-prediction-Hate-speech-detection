@@ -1,6 +1,3 @@
-Here’s a **humanized and engaging version** of your GitHub README file for the **ML Prediction Dashboard**:
-
----
 
 # 🤖 ML Prediction Dashboard
 
